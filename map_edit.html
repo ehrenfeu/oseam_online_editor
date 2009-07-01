@@ -8,7 +8,6 @@
 		<meta http-equiv="content-language" content="de" />
 		<link rel="stylesheet" type="text/css" href="map-edit.css">
 		<script type="text/javascript" src="http://www.openlayers.org/api/OpenLayers.js"></script>
-
 		<script type="text/javascript" src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 		<script type="text/javascript" src="javascript/prototype.js"></script>
 		<script type="text/javascript">
@@ -281,8 +280,7 @@
 				if (arrayMarker[id].feature.popup != null) {
 					arrayMarker[id].feature.popup.hide();
 				}
-				positionWindow = window.open("position.html", "Position", "width=300, height=200, resizable=yes");
-				positionWindow.focus();
+				document.getElementById("position_dialog").style.visibility = "visible";
 			}
 
 			function moveSeamarkOk() {
@@ -303,7 +301,7 @@
 				if (arrayMarker[id].feature.popup != null) {
 					arrayMarker[id].feature.popup.hide();
 				}
-				editWindow = window.open("edit_seamark.html?mode=delete&id=" + id + "&version=" + version, "Löschen", "width=650, height=450, resizable=yes");
+				editWindow = window.open("edit_seamark.html?mode=delete&id=" + id + "&version=" + version, "LÃ¶schen", "width=650, height=450, resizable=yes");
  				editWindow.focus();
 			}
 			
@@ -540,7 +538,7 @@
 						popupText += "<br/> <br/>";
 						popupText += "<input type=\"button\" value=\"Bearbeiten\" onclick=\"editSeamarkEdit(" + id + "," + version + "," + lat + "," + lon + ")\">&nbsp;&nbsp;";
 						popupText += "<input type=\"button\" value=\"Verschieben\"onclick=\"moveSeamarkEdit(" + id + "," + version + ")\">&nbsp;&nbsp;";
-						popupText += "<input type=\"button\" value=\"Löschen\"onclick=\"deleteSeamarkEdit(" + id + "," + version + ")\">";
+						popupText += "<input type=\"button\" value=\"LÃ¶schen\"onclick=\"deleteSeamarkEdit(" + id + "," + version + ")\">";
 						addMarker(id, popupText);
 					}
 				}
@@ -573,13 +571,13 @@
 			// Load description
 			function getText(value) {
 				if (value == "safe_water")
-					return "Ansteuerungs Tonne Hizufügen: \n\n";
+					return "Ansteuerungs Tonne HizufÃ¼gen: \n\n";
 				if (value == "starboard")
-					return "Steuerbord Tonne Hizufügen: \n\n";
+					return "Steuerbord Tonne HizufÃ¼gen: \n\n";
 				if (value == "port")
-					return "Backbord Tonne Hizufügen: \n\n";
+					return "Backbord Tonne HizufÃ¼gen: \n\n";
 				if (value == "AddDescription")
-					return "Bitte klicken sie auf die Stelle, an der das Seezeichen hinzugefügt werden soll.";
+					return "Bitte klicken sie auf die Stelle, an der das Seezeichen hinzugefÃ¼gt werden soll.";
 			}
 		
 		</script>
@@ -587,16 +585,14 @@
 	<body onload=drawmap();>
 		<div id="head" style="position:absolute; top:2px; left:0px;">
 			<a><b>OpenSeaMap - Editor</b></a>
-
 		</div>
 		<div id="login" style="position:absolute; top:30px; left:0px;">
 			<hr>
 			<form name="login" action="">
-				<a>Sie müssen amgemeldet sein um die Karte bearbeiten zu können.<br/><br/></a>
+				<a>Sie mÃ¼ssen amgemeldet sein um die Karte bearbeiten zu kÃ¶nnen.<br/><br/></a>
 				<input type="button" value="Anmelden" onclick="loginUser()">
 			</form>
 		</div>
-
 		<div id="logout" style="position:absolute; top:30px; left:0px; visibility:hidden;" >
 			<hr>
 			<form name="logout" action="">
@@ -605,7 +601,6 @@
 			</form>
 		</div>
 		<div style="position:absolute; top:140px; left:11.5%;"><a href="http://wiki.openstreetmap.org/wiki/de:Seekarte" target="blank">Hilfe</a></div>
-
 		<div id="data" style="position:absolute; top:150px; left:0px;">
 			<hr>
 			<a><b>Daten</b></a><br/><br/>
@@ -614,8 +609,7 @@
 		<div style="position:absolute; top:230px; left:11.5%;"><a href="http://wiki.openstreetmap.org/wiki/de:Seekarte" target="blank">Hilfe</a></div>
 		<div id="action" style="position:absolute; top:240px; left:0px;">
 			<hr>
-
-			<a><b>Hinzufügen</b></a><br/><br/>
+			<a><b>HinzufÃ¼gen</b></a><br/><br/>
 			<table width="100%" border="0" cellspacing="0" cellpadding="5" valign="top">
 				<tr>
 					<td	onclick="showSeamarkAdd('true')"
@@ -627,7 +621,6 @@
 						<IMG src="resources/action/go-next.png" width="16" height="16" align="right" border="0"/>
 					</td>
 				</tr>
-
 				<tr>
 					<td	onclick="showLandmarkAdd('true')"
 						onmouseover="this.parentNode.style.backgroundColor = 'gainsboro';"
@@ -644,7 +637,6 @@
 						onmouseout="this.parentNode.style.backgroundColor = 'white';"
 						style="cursor:pointer">Hafenanlage
 					</td>
-
 					<td>
 						<IMG src="./resources/action/go-next.png" width="16" height="16" align="right" border="0"/>
 					</td>
@@ -653,9 +645,8 @@
 		</div>
 		<div id="map" style="position:absolute; bottom:0px; right:0px;"></div>
 		<div style="position:absolute; bottom:50px; left:3%;">
-			Version 0.0.89.2
+			Version 0.0.89.3
 		</div>
-
 		<div style="position:absolute; bottom:10px; left:4%;">
 			<img src="resources/somerights20.png" title="This work is licensed under the Creative Commons Attribution-ShareAlike 2.0 License" onClick="window.open('http://creativecommons.org/licenses/by-sa/2.0')" />
 		</div>
@@ -665,7 +656,6 @@
 					<td>
 						<IMG src="resources/lateral/Lateral_SafeWater_Sphere.png" width="30" height="36" align="center" border="0"/>
 					</td>
-
 					<td	onclick="addSeamark('safe_water')"
 						onmouseover="this.parentNode.style.backgroundColor = 'gainsboro';"
 						onmouseout="this.parentNode.style.backgroundColor = 'white';"
@@ -682,7 +672,6 @@
 						style="cursor:pointer">Steuerbord
 					</td>
 				</tr>
-
 				<tr>
 					<td>
 						<IMG src="resources/lateral/Lateral_Red_Cylindrical.png" width="30" height="36" align="center" border="0"/>
@@ -695,7 +684,6 @@
 				</tr>
 				<tr>
 					<td>
-
 						<IMG src="resources/lateral/Lateral_Pref_Starboard_Conical.png" width="30" height="36" align="center" border="0"/>
 					</td>
 					<td	onclick="addSeamark('preferred_channel_starboard')"
@@ -708,7 +696,6 @@
 					<td>
 						<IMG src="resources/lateral/Lateral_Pref_Port_Cylindrical.png" width="30" height="36" align="center" border="0"/>
 					</td>
-
 					<td	onclick="addSeamark('preferred_channel_port')"
 						onmouseover="this.parentNode.style.backgroundColor = 'gainsboro';"
 						onmouseout="this.parentNode.style.backgroundColor = 'white';"
@@ -719,9 +706,8 @@
 					<td>
 					</td>
 					<td align="right" valign="bottom" >
-						<input type="button" value="Schließen" onclick="showSeamarkAdd('false')" >
+						<input type="button" value="SchlieÃŸen" onclick="showSeamarkAdd('false')" >
 					</td>
-
 				</tr>
 			</table>
 		</div>
@@ -731,17 +717,15 @@
 					<td>
 						<IMG src="./resources/action/baustelle.png" width="38" height="36" align="center" border="0"/>
 					</td>
-
 					<td>
-						Später
+						SpÃ¤ter
 					</td>
 				</tr>
 				<tr height="100%">
 					<td>
 					</td>
 					<td align="right" valign="bottom" >
-						<input type="button" value="Schließen" onclick="showLandmarkAdd('false')" >
-
+						<input type="button" value="SchlieÃŸen" onclick="showLandmarkAdd('false')" >
 					</td>
 				</tr>
 			</table>
@@ -751,18 +735,16 @@
 				<tr>
 					<td>
 						<IMG src="./resources/action/baustelle.png" width="38" height="36" align="center" border="0"/>
-
 					</td>
 					<td>
-						Später
+						SpÃ¤ter
 					</td>
 				</tr>
 				<tr height="100%">
 					<td>
 					</td>
 					<td align="right" valign="bottom" >
-
-						<input type="button" value="Schließen" onclick="showHarbourAdd('false')" >
+						<input type="button" value="SchlieÃŸen" onclick="showHarbourAdd('false')" >
 					</td>
 				</tr>
 			</table>
@@ -770,7 +752,6 @@
 		<div id="position_dialog" class="dialog" style="position:absolute; top:25px; left:20%; width:300px; height:180px; visibility:hidden;">
 			<h3>Position des Seezeichens</h3>
 			<form name="position" action="">
-
 			<table>
 				<tr>
 					<td valign="top">
@@ -779,7 +760,6 @@
 					<td valign="top">
 						<input type="text" name="lat-position" align="left"/>
 					</td>
-
 				</tr>
 				<tr>
 					<td valign="top">
@@ -788,7 +768,6 @@
 					<td valign="top">
 						<input type="text" name="lon-position" align="left"/>
 					</td>
-
 				</tr>
 			</table>
 			<p align="right">
@@ -798,7 +777,6 @@
 				<input type="button" value="Klick" onclick="addSeamarkPosClick();">
 				&nbsp;&nbsp;
 				<input type="button" value="Abbrechen" onclick="onPositionDialogCancel()">
-
 				&nbsp;&nbsp;
 			</p>
 			</form>
@@ -809,7 +787,6 @@
 		<div id="creating" class="infobox" style="position:absolute; top:50%; left:50%; width:250px; height:30px; visibility:hidden;">
 			<img src="resources/wait.gif" width="22" height="22" /> &nbsp;&nbsp;Changeset wird erzeugt.
 		</div>
-
 		<div id="saving" class="infobox" style="position:absolute; top:50%; left:50%; width:300px; height:30px; visibility:hidden;">
 			<img src="resources/wait.gif" width="22" height="22" /> &nbsp;&nbsp;Daten werden gespeichert.
 		</div>
