@@ -210,9 +210,12 @@
 
 			function clickSeamarkMap() {
 				if (_ToDo == "move") {
-					moveSeamarkOk();
+					//moveSeamarkOk();
+					document.getElementById("pos-lat").value = lat;
+					document.getElementById("pos-lon").value = lon;
 				} else {
-					addSeamarkEdit();
+					document.getElementById("pos-lat").value = lat;
+					document.getElementById("pos-lon").value = lon;
 				}
 				_ToDo = null;
 				document.body.style.cursor="default";
@@ -226,25 +229,21 @@
 			function addSeamark(seamark) {
 				document.getElementById("position_dialog").style.visibility = "visible";
 				document.getElementById("add_seamark_dialog").style.visibility = "collapse";
-				seamarkType = seamark;
-			}
-
-			function addSeamarkPosClick() {
 				click.activate();
-				document.getElementById("position_dialog").style.visibility = "collapse";
 				document.body.style.cursor="crosshair";
+				seamarkType = seamark;
 			}
 
 			function addSeamarkPosOk(latValue, lonValue) {
 				document.getElementById("position_dialog").style.visibility = "collapse";
 				lon = parseFloat(lonValue);
 				lat = parseFloat(latValue);
+				_NodeId = "11";
+				addMarker(_NodeId, "");
 				addSeamarkEdit();
 			}
 			
 			function addSeamarkEdit() {
-				_NodeId = "11";
-				addMarker(_NodeId, "");
 				editWindow = window.open("edit_lateral.html" + "?type=" + seamarkType, "Bearbeiten", "width=650, height=450, resizable=yes");
  				editWindow.focus();
 			}
@@ -281,6 +280,8 @@
 					arrayMarker[id].feature.popup.hide();
 				}
 				document.getElementById("position_dialog").style.visibility = "visible";
+				click.activate();
+				document.body.style.cursor="crosshair";
 			}
 
 			function moveSeamarkOk() {
@@ -304,7 +305,11 @@
 				editWindow = window.open("edit_seamark.html?mode=delete&id=" + id + "&version=" + version, "Löschen", "width=650, height=450, resizable=yes");
  				editWindow.focus();
 			}
-			
+
+			function positionOk(latValue, lonValue) {
+				addSeamarkPosOk(latValue, lonValue);
+			}
+
 			// Open login window
 			function loginUser() {
 				loginWindow = window.open("user-login.html", "Login", "width=380, height=200, resizable=yes");
@@ -650,6 +655,7 @@
 		<div style="position:absolute; bottom:10px; left:4%;">
 			<img src="resources/somerights20.png" title="This work is licensed under the Creative Commons Attribution-ShareAlike 2.0 License" onClick="window.open('http://creativecommons.org/licenses/by-sa/2.0')" />
 		</div>
+		<!--Add Seamark-Data-Dialog-->
 		<div id="add_seamark_dialog" class="dialog" style="position:absolute; top:150px; left:15%; width:250px; height:500px; visibility:hidden;">
 			<table height="100%" border="0" cellspacing="0" cellpadding="5" valign="top">
 				<tr>
@@ -711,6 +717,7 @@
 				</tr>
 			</table>
 		</div>
+		<!--Add Landmark-Data-Dialog-->
 		<div id="add_landmark_dialog" class="dialog" style="position:absolute; top:150px; left:15%; width:250px; height:300px; visibility:hidden;">
 			<table height="100%" width="100%" border="0" cellspacing="0" cellpadding="5" valign="top">
 				<tr>
@@ -730,6 +737,7 @@
 				</tr>
 			</table>
 		</div>
+		<!--Add Harbour-Data-Dialog-->
 		<div id="add_harbour_dialog" class="dialog" style="position:absolute; top:150px; left:15%; width:250px; height:300px; visibility:hidden;">
 			<table height="100%" width="100%" border="0" cellspacing="0" cellpadding="5" valign="top">
 				<tr>
@@ -749,6 +757,7 @@
 				</tr>
 			</table>
 		</div>
+		<!--Position-Dialog-->
 		<div id="position_dialog" class="dialog" style="position:absolute; top:25px; left:20%; width:300px; height:180px; visibility:hidden;">
 			<h3>Position des Seezeichens</h3>
 			<form name="position" action="">
@@ -758,7 +767,7 @@
 						Lat:&nbsp;
 					</td>
 					<td valign="top">
-						<input type="text" name="lat-position" align="left"/>
+						<input type="text" name="lat-position" id="pos-lat" align="left"/>
 					</td>
 				</tr>
 				<tr>
@@ -766,27 +775,28 @@
 						Lon:&nbsp;
 					</td>
 					<td valign="top">
-						<input type="text" name="lon-position" align="left"/>
+						<input type="text" name="lon-position" id="pos-lon" align="left"/>
 					</td>
 				</tr>
 			</table>
 			<p align="right">
 				<br>
-				<input type="button" value="OK" onclick="addSeamarkPosOk(window.document.position.lat-position.value, window.document.position.lon-position.value);">
-				&nbsp;&nbsp;
-				<input type="button" value="Klick" onclick="addSeamarkPosClick();">
+				<input type="button" value="OK" onclick="positionOk(document.getElementById('pos-lat').value, document.getElementById('pos-lon').value);">
 				&nbsp;&nbsp;
 				<input type="button" value="Abbrechen" onclick="onPositionDialogCancel()">
 				&nbsp;&nbsp;
 			</p>
 			</form>
 		</div>
+		<!--Load Data Wait-Dialog-->
 		<div id="loading" class="infobox" style="position:absolute; top:50%; left:50%; width:250px; height:30px; visibility:hidden;">
 			<img src="resources/wait.gif" width="22" height="22" /> &nbsp;&nbsp;Daten werden geladen.
 		</div>
+		<!--Create Changeset Wait-Dialog-->
 		<div id="creating" class="infobox" style="position:absolute; top:50%; left:50%; width:250px; height:30px; visibility:hidden;">
 			<img src="resources/wait.gif" width="22" height="22" /> &nbsp;&nbsp;Changeset wird erzeugt.
 		</div>
+		<!--Save Data Wait-Dialog-->
 		<div id="saving" class="infobox" style="position:absolute; top:50%; left:50%; width:300px; height:30px; visibility:hidden;">
 			<img src="resources/wait.gif" width="22" height="22" /> &nbsp;&nbsp;Daten werden gespeichert.
 		</div>
