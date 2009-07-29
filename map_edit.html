@@ -209,17 +209,8 @@
 			}
 
 			function clickSeamarkMap() {
-				if (_ToDo == "move") {
-					//moveSeamarkOk();
-					document.getElementById("pos-lat").value = lat;
-					document.getElementById("pos-lon").value = lon;
-				} else {
-					document.getElementById("pos-lat").value = lat;
-					document.getElementById("pos-lon").value = lon;
-				}
-				_ToDo = null;
-				document.body.style.cursor="default";
-				click.deactivate();
+				document.getElementById("pos-lat").value = lat;
+				document.getElementById("pos-lon").value = lon;
 			}
 
 			function onPositionDialogCancel() {
@@ -229,13 +220,16 @@
 			function addSeamark(seamark) {
 				document.getElementById("position_dialog").style.visibility = "visible";
 				document.getElementById("add_seamark_dialog").style.visibility = "collapse";
+				// activate click event for entering a new position
 				click.activate();
 				document.body.style.cursor="crosshair";
+				// set the seamark type
 				seamarkType = seamark;
+				// remember what we are doing
+				_ToDo = "add";
 			}
 
 			function addSeamarkPosOk(latValue, lonValue) {
-				document.getElementById("position_dialog").style.visibility = "collapse";
 				lon = parseFloat(lonValue);
 				lat = parseFloat(latValue);
 				_NodeId = "11";
@@ -273,27 +267,45 @@
 			}
 
 			function moveSeamarkEdit(id, version) {
-				_ToDo = "move";
 				_NodeId = id;
 				_Version = version;
 				if (arrayMarker[id].feature.popup != null) {
 					arrayMarker[id].feature.popup.hide();
 				}
 				document.getElementById("position_dialog").style.visibility = "visible";
+				// activate click event for entering a new position
 				click.activate();
 				document.body.style.cursor="crosshair";
+				// remember what we are doing
+				_ToDo = "move";
 			}
 
 			function moveSeamarkOk() {
+				// remove old marker
 				removeMarker();
-
+				// set popup text for the new marker
 				var popupText = "ID = " + _NodeId;
 				popupText += " - Lat = " + lat;
 				popupText += " - Lon = " + lon;
 				popupText += " - Version = " + _Version;
-
+				// add marker at the new position
 				addMarker(id, popupText);
-				editSeamarkEdit(_NodeId, _Version, lat, lon);
+				moveSeamarkSave(lat, lon);
+			}
+
+			function moveSeamarkSave(pos_lat, pos_lon) {
+				lat = pos_lat;
+				lon = pos_lon;
+
+				if (arrayMarker[id].feature.popup != null) {
+					arrayMarker[id].feature.popup.hide();
+				}
+				editWindow = window.open("edit_seamark.html?mode=move&id=" + _NodeId + "&version=" + _Version, "Bearbeiten", "width=650, height=450, resizable=yes");
+ 				editWindow.focus();
+			}
+
+			function moveSeamarkCancel() {
+				
 			}
 
 			function deleteSeamarkEdit(id, version) {
@@ -306,8 +318,23 @@
  				editWindow.focus();
 			}
 
+			// Entering a new position finished
 			function positionOk(latValue, lonValue) {
-				addSeamarkPosOk(latValue, lonValue);
+				switch (_ToDo) {
+					case "add":
+						addSeamarkPosOk(latValue, lonValue);
+						break;
+					case "move":
+						moveSeamarkOk();
+						break;
+				}
+				// nothing todo left
+				_ToDo = null;
+				// disable click event
+				document.body.style.cursor="default";
+				click.deactivate();
+				// hide position dialog
+				document.getElementById("position_dialog").style.visibility = "collapse";
 			}
 
 			// Open login window

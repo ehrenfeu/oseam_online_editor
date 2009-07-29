@@ -32,24 +32,35 @@
 					case "delete":
 						document.getElementById("header_delete").style.visibility = "visible";
 						document.getElementById("header_edit").style.visibility = "collapse";
+						document.getElementById("header_move").style.visibility = "collapse";
 						document.AddLateral.save_button.value = "Löschen";
-					case "update":
-						_id = getArgument("id");
-						_version = getArgument("version");
-						_node = opener.window.getKeys(_id);
-						_tags = _node.split("|");
-						_seamark = getKey("seamark");
-						switch (_seamark) {
-							case "buoy_safe_water":
-								_category = "safe_water";
-								_buoy_shape = getKey("seamark:buoy_safe_water:shape");
-								break;
-							case "buoy_lateral":
-								_category = getKey("seamark:buoy_lateral:category");
-								_buoy_shape = getKey("seamark:buoy_lateral:shape");
-								break;
-						}
 						break
+					case "move":
+						document.getElementById("header_delete").style.visibility = "collapse";
+						document.getElementById("header_edit").style.visibility = "collapse";
+						document.getElementById("header_move").style.visibility = "visible";
+						break
+					case "update":
+						document.getElementById("header_delete").style.visibility = "collapse";
+						document.getElementById("header_edit").style.visibility = "visible";
+						document.getElementById("header_move").style.visibility = "collapse";
+						break
+				}
+
+				_id = getArgument("id");
+				_version = getArgument("version");
+				_node = opener.window.getKeys(_id);
+				_tags = _node.split("|");
+				_seamark = getKey("seamark");
+				switch (_seamark) {
+					case "buoy_safe_water":
+						_category = "safe_water";
+						_buoy_shape = getKey("seamark:buoy_safe_water:shape");
+						break;
+					case "buoy_lateral":
+						_category = getKey("seamark:buoy_lateral:category");
+						_buoy_shape = getKey("seamark:buoy_lateral:shape");
+						break;
 				}
 
 				document.AddLateral.seamark_category.value = _category;
@@ -235,8 +246,12 @@
 			}
 
 			function cancel() {
-				if (_mode == "add") {
-					opener.window.addSeamarkCancel();
+				switch (_mode) {
+					case "add":
+						break
+					case "move":
+						opener.window.moveSeamarkCancel();
+						break
 				}
 				this.close();
 			}
@@ -314,6 +329,7 @@
 	</head>
 	<body onload=init();>
 		<div id="header_edit" style="position:absolute; top:2px; left:5px;"><h2>Seezeichen bearbeiten</h2></div>
+		<div id="header_move" style="position:absolute; top:2px; left:5px; visibility:hidden;"><h2>Seezeichen verschieben</h2></div>
 		<div id="header_delete" style="position:absolute; top:2px; left:5px; visibility:hidden;"><h2>Seezeichen löschen</h2></div>
 		<div id="body_form" style="position:absolute; top:65px; left:0px;">
 		<form name="AddLateral" action="">
