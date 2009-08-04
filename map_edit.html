@@ -114,7 +114,7 @@
 
 			// Map event listener
 			function mapEvent(event) {
-
+				// later needed for data update
 			}
 
 			// Draw the map
@@ -211,10 +211,16 @@
 			function clickSeamarkMap() {
 				document.getElementById("pos-lat").value = lat;
 				document.getElementById("pos-lon").value = lon;
+				// workaround for openlayers resetting the cursor style on click
+				map.div.style.cursor="crosshair";
 			}
 
 			function onPositionDialogCancel() {
+				// hide position dialog
 				document.getElementById("position_dialog").style.visibility = "collapse";
+				// disable click event
+				map.div.style.cursor="default";
+				click.deactivate();
 			}
 
 			function addSeamark(seamark) {
@@ -222,7 +228,7 @@
 				document.getElementById("add_seamark_dialog").style.visibility = "collapse";
 				// activate click event for entering a new position
 				click.activate();
-				document.body.style.cursor="crosshair";
+				map.div.style.cursor="crosshair";
 				// set the seamark type
 				seamarkType = seamark;
 				// remember what we are doing
@@ -275,7 +281,7 @@
 				document.getElementById("position_dialog").style.visibility = "visible";
 				// activate click event for entering a new position
 				click.activate();
-				document.body.style.cursor="crosshair";
+				map.div.style.cursor="crosshair";
 				// remember what we are doing
 				_ToDo = "move";
 			}
@@ -324,7 +330,7 @@
 				// nothing todo left
 				_ToDo = null;
 				// disable click event
-				document.body.style.cursor="default";
+				map.div.style.cursor="default";
 				click.deactivate();
 				// hide position dialog
 				document.getElementById("position_dialog").style.visibility = "collapse";
@@ -485,19 +491,14 @@
 				var zoomLevel = map.getZoom();
 				if (zoomLevel > 15) {
 					document.getElementById("loading").style.visibility = "visible";
-					var bounds = map.getExtent().toArray();
-					var south = y2lat(bounds[1]);
-					var north = y2lat(bounds[3]);
-					var west = x2lon(bounds[0]);
-					var east = x2lon(bounds[2]);
 
 					var url = './api/map.php';
 					var params = new Object();
-
-					params["n"] = north;
-					params["s"] = south;
-					params["w"] = west;
-					params["e"] = east;
+					var bounds = map.getExtent().toArray();
+					params["n"] = y2lat(bounds[3]);
+					params["s"] = y2lat(bounds[1]);
+					params["w"] = x2lon(bounds[0]);
+					params["e"] = x2lon(bounds[2]);
 
 					new Ajax.Request(url, {
 						method: 'get',

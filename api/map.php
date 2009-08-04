@@ -49,6 +49,6 @@
 
 	$_response = sendOSM($_url, $_path, $_data);
 	
-	echo $_response; //$_url ."/api/0.6/map?" .$_data;
+	echo $_response;
 
 ?> 
